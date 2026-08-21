@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio Animasi Penuh | Tema Ungu</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome untuk Ikon Sosial Media -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* === RESET & VARIABEL === */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+        :root { 
+            --bg-color: #130a1f; 
+            --text-color: #f8fafc; 
+            --accent-color: #c084fc; 
+            --card-bg: #23153c; 
+            --glass-bg: rgba(19, 10, 31, 0.8);
+        }
+        body { background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; cursor: none; }
+        
+        /* === PARTIKEL BACKGROUND === */
+        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; }
+        
+        /* === KURSOR KUSTOM === */
+        a, button, .card, .skill-img, .profile-img { cursor: none; }
+        .cursor-dot { width: 8px; height: 8px; background-color: var(--accent-color); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, background-color 0.2s; box-shadow: 0 0 10px var(--accent-color); }
+        .cursor-outline { width: 40px; height: 40px; border: 2px solid var(--accent-color); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: transform 0.15s ease-out, width 0.2s, height 0.2s, border-color 0.2s; }
+        .cursor-hover .cursor-dot { width: 12px; height: 12px; background-color: #fff; box-shadow: 0 0 20px #fff; }
+        .cursor-hover .cursor-outline { width: 60px; height: 60px; border-color: #fff; background-color: rgba(192, 132, 252, 0.1); }
+
+        /* === NAVIGASI === */
+        nav { position: fixed; top: 0; width: 100%; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: var(--glass-bg); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 1px solid rgba(192, 132, 252, 0.1); transition: all 0.5s ease; }
+        .logo { font-size: 24px; font-weight: 700; transition: transform 0.3s ease; }
+        .logo:hover { transform: scale(1.05); }
+        .logo span { color: var(--accent-color); text-shadow: 0 0 10px var(--accent-color); }
+        
+        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .nav-links a { color: var(--text-color); text-decoration: none; font-weight: 600; position: relative; padding-bottom: 5px; transition: color 0.3s; }
+        .nav-links a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 0; background-color: var(--accent-color); transition: width 0.3s ease-in-out; box-shadow: 0 0 8px var(--accent-color); }
+        .nav-links a:hover { color: var(--accent-color); }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* === LAYOUT UMUM === */
+        section { min-height: 100vh; padding: 120px 10%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .section-title { font-size: 36px; color: var(--accent-color); margin-bottom: 50px; text-shadow: 0 0 15px rgba(192, 132, 252, 0.4); }
+        
+        /* === ANIMASI MENGAMBANG === */
+        @keyframes floating { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+
+        /* === HERO SECTION === */
+        .hero-container { display: flex; flex-direction: row; align-items: center; justify-content: space-between; width: 100%; max-width: 1100px; gap: 50px; }
+        .hero-content { flex: 1; text-align: left; animation: floating 4s ease-in-out infinite; }
+        .hero-content h1 { font-size: 3.5rem; margin-bottom: 10px; line-height: 1.2; }
+        .hero-content h2 { font-size: 1.5rem; font-weight: 400; color: #a78bfa; margin-bottom: 20px; }
+        .hero-content p { font-size: 1.1rem; color: #cbd5e1; margin-bottom: 40px; max-width: 500px; line-height: 1.6; }
+        
+        .hero-image-wrapper { flex: 1; display: flex; justify-content: center; position: relative; }
+        .profile-img { 
+            width: 100%; 
+            max-width: 350px; 
+            aspect-ratio: 1/1; 
+            object-fit: cover; 
+            border-radius: 50%; 
+            border: 4px solid var(--accent-color); 
+            box-shadow: 0 0 30px rgba(192, 132, 252, 0.5), inset 0 0 20px rgba(192, 132, 252, 0.5); 
+            animation: floating 4s ease-in-out infinite; 
+            animation-delay: 1s; 
+            transform-style: preserve-3d;
+        }
+
+        .btn { padding: 12px 35px; background: var(--accent-color); color: #130a1f; text-decoration: none; font-weight: 700; border-radius: 30px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: inline-block; position: relative; overflow: hidden; z-index: 1; }
+        .btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: left 0.5s ease; z-index: -1; }
+        .btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 25px rgba(192, 132, 252, 0.5); background: #d8b4fe; }
+        .btn:hover::before { left: 100%; }
+
+        /* === SKILLS & FOTO === */
+        .skills-wrapper { display: flex; flex-direction: row; gap: 50px; width: 100%; max-width: 1100px; align-items: center; text-align: left; }
+        .skills-container { flex: 1; width: 100%; }
+        .skill-box { margin-bottom: 25px; transition: transform 0.3s ease; }
+        .skill-box:hover { transform: translateX(10px); }
+        .skill-box p { font-weight: 600; margin-bottom: 8px; display: flex; justify-content: space-between; }
+        .skill-bar { width: 100%; height: 12px; background: #3b2861; border-radius: 10px; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
+        /* Transisi dibuat menjadi 1.2s agar pengisian bar terlihat mulus setiap kali muncul */
+        .skill-progress { width: 0; height: 100%; background: linear-gradient(90deg, #9333ea, var(--accent-color)); border-radius: 10px; transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1); box-shadow: 0 0 10px var(--accent-color); }
+        .skills-photos { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; perspective: 1000px; }
+        .skill-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 15px; background-color: var(--card-bg); transform-style: preserve-3d; }
+
+        /* === GRID PROYEK === */
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; width: 100%; max-width: 1100px; perspective: 1000px; }
+        .card { background: rgba(35, 21, 60, 0.6); backdrop-filter: blur(5px); padding: 30px; border-radius: 15px; border: 1px solid rgba(192, 132, 252, 0.2); text-align: left; transform-style: preserve-3d; transition: border-color 0.3s ease; }
+        .card:hover { border-color: var(--accent-color); }
+        .card h3, .card p, .card span { transform: translateZ(30px); transition: transform 0.3s ease; }
+        .card h3 { color: var(--accent-color); margin-bottom: 10px; font-size: 1.4rem; }
+        .card span { font-size: 0.8rem; background: #3b2861; padding: 5px 12px; border-radius: 20px; color: #e9d5ff; display: inline-block; margin-bottom: 15px; }
+        .card p { color: #cbd5e1; line-height: 1.5; }
+
+        /* === KONTAK (SOSIAL MEDIA) === */
+        #kontak { min-height: 60vh; padding-top: 60px; }
+        .social-links { display: flex; gap: 25px; justify-content: center; flex-wrap: wrap; width: 100%; max-width: 800px; }
+        .social-btn { display: flex; align-items: center; gap: 12px; padding: 15px 35px; border-radius: 50px; font-size: 1.2rem; font-weight: 600; text-decoration: none; color: #e9d5ff; background: rgba(35, 21, 60, 0.6); backdrop-filter: blur(5px); border: 1px solid rgba(192, 132, 252, 0.3); transition: all 0.3s ease; transform-style: preserve-3d; }
+        .social-btn i { font-size: 1.5rem; transform: translateZ(20px); transition: 0.3s; }
+        
+        .social-btn.whatsapp:hover { background: #25D366; color: white; border-color: #25D366; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.5); }
+        .social-btn.instagram:hover { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: white; border-color: #dc2743; box-shadow: 0 10px 25px rgba(220, 39, 67, 0.5); }
+        .social-btn.tiktok:hover { background: #000000; color: white; border-color: #69C9D0; box-shadow: -5px 5px 15px rgba(105, 201, 208, 0.5), 5px -5px 15px rgba(238, 29, 82, 0.5); }
+
+        /* === FOOTER === */
+        footer { padding: 30px; text-align: center; background: rgba(19, 10, 31, 0.95); border-top: 1px solid rgba(192, 132, 252, 0.2); font-size: 0.9rem; color: #a78bfa; }
+
+        /* === KELAS ANIMASI SCROLL REVEAL (Diperhalus) === */
+        .animate-hidden { opacity: 0; transform: translateY(60px) scale(0.95); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .animate-show { opacity: 1; transform: translateY(0) scale(1); }
+
+        /* === RESPONSIVE HP === */
+        @media (max-width: 768px) {
+            body, a, button, .card, .skill-img, .profile-img { cursor: auto; }
+            .cursor-dot, .cursor-outline { display: none !important; } 
+            nav { padding: 15px 20px; flex-direction: column; gap: 10px; }
+            .nav-links { gap: 15px; flex-wrap: wrap; justify-content: center; font-size: 0.9rem;}
+            section { padding: 140px 5% 60px; }
+            
+            .hero-container { flex-direction: column-reverse; text-align: center; gap: 30px; }
+            .hero-content { text-align: center; animation: none; } 
+            .profile-img { max-width: 250px; margin-bottom: 10px; }
+            
+            .skills-wrapper { flex-direction: column; gap: 40px; }
+            .skills-photos { grid-template-columns: 1fr; }
+            .social-btn { width: 100%; justify-content: center; } 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="particles-js"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <nav>
+        <div class="logo">My<span>Portofolio</span>.</div>
+        <ul class="nav-links">
+            <li><a href="#beranda">Beranda</a></li>
+            <li><a href="#keahlian">Keahlian</a></li>
+            <li><a href="#tugas">Portofolio</a></li>
+            <li><a href="#kontak">Kontak</a></li>
+        </ul>
+    </nav>
+
+    <section id="beranda" class="hero">
+        <div class="hero-container">
+            <div class="hero-content animate-hidden">
+                <h1>Halo, Saya <br><span style="color: var(--accent-color); text-shadow: 0 0 15px rgba(192,132,252,0.6);">Abi Muhammad</span></h1>
+                <h2>Siswa SMA NEGERI 1 PASIR SAKTI</h2>
+                <p>Hi, I am a student who has an interest in the world of coding and I will continue to develop my coding skills.</p>
+                <a href="#tugas" class="btn">Lihat Proyek Saya</a>
+            </div>
+            <div class="hero-image-wrapper animate-hidden" style="transition-delay: 200ms;">
+                <img src="unnamed.jpg" 
+                     alt="Foto Profil Abi" 
+                     class="profile-img" 
+                     data-tilt 
+                     data-tilt-glare 
+                     data-tilt-max-glare="0.5" 
+                     data-tilt-scale="1.05">
+            </div>
+        </div>
+    </section>
+
+    <section id="Skil">
+        <h2 class="section-title animate-hidden">Skills</h2>
+        <div class="skills-wrapper animate-hidden">
+            <div class="skills-container">
+                <div class="skill-box">
+                    <p><span>Manage Sound system</span> <span>80%</span></p>
+                    <div class="skill-bar"><div class="skill-progress" data-width="85%"></div></div>
+                </div>
+                <div class="skill-box">
+                    <p><span>HTML & CSS</span> <span>70%</span></p>
+                    <div class="skill-bar"><div class="skill-progress" data-width="70%"></div></div>
+                </div>
+                <div class="skill-box">
+                    <p><span>Elektronika</span> <span>75%</span></p>
+                    <div class="skill-bar"><div class="skill-progress" data-width="75%"></div></div>
+                </div>
+            </div>
+            <div class="skills-photos">
+                <!-- Tambahkan penundaan animasi (delay) agar munculnya bergantian -->
+                <img src="IMG-20260807-WA0002~2.jpg" alt="Lagi Coding" class="skill-img animate-hidden" data-tilt data-tilt-glare data-tilt-max-glare="0.5" style="transition-delay: 150ms;">
+                <img src="IMG_20260821_195732.jpg" alt="Sertifikat/Desain" class="skill-img animate-hidden" data-tilt data-tilt-glare data-tilt-max-glare="0.5" style="transition-delay: 300ms;">
+            </div>
+        </div>
+    </section>
+
+    <section id="tugas">
+        <h2 class="section-title animate-hidden">Tugas & Proyek</h2>
+        <div class="project-grid">
+            <div class="card animate-hidden" data-tilt data-tilt-glare data-tilt-max-glare="0.2" data-tilt-scale="1.05">
+                <h3>Yearbook Web Angkatan</h3>
+                <span>Kenangan Wisuda</span>
+                <p>Membuat antarmuka web untuk Menyimpan Foto.</p>
+            </div>
+            <div class="card animate-hidden" data-tilt data-tilt-glare data-tilt-max-glare="0.2" data-tilt-scale="1.05" style="transition-delay: 150ms;">
+                <h3>Kalkulator Interaktif</h3>
+                <span>Tugas Mandiri</span>
+                <p>Aplikasi web untuk menghitung rumus matematika dasar dengan tampilan elegan dan mode gelap.</p>
+            </div>
+            <div class="card animate-hidden" data-tilt data-tilt-glare data-tilt-max-glare="0.2" data-tilt-scale="1.05" style="transition-delay: 300ms;">
+                <h3>Desain Mockup App</h3>
+                <span>Sekolah</span>
+                <p>Mendesain prototipe aplikasi .</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="kontak">
+        <h2 class="section-title animate-hidden">Hubungi Saya</h2>
+        <div class="social-links animate-hidden">
+            <a href="https://wa.me/6285809867532" target="_blank" class="social-btn whatsapp" data-tilt data-tilt-scale="1.1">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+            <a href="https://instagram.com/abi._.muhammad_/" target="_blank" class="social-btn instagram" data-tilt data-tilt-scale="1.1" style="transition-delay: 150ms;">
+                <i class="fab fa-instagram"></i> Instagram
+            </a>
+            <a href="https://tiktok.com/@aby.uwoe" target="_blank" class="social-btn tiktok" data-tilt data-tilt-scale="1.1" style="transition-delay: 300ms;">
+                <i class="fab fa-tiktok"></i> TikTok
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026  | Aby</p>
+    </footer>
+
+    <!-- Library Eksternal -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    
+    <script>
+        // 1. Setup Partikel Background
+        particlesJS('particles-js', {
+            "particles": { "number": { "value": 70 }, "color": { "value": "#c084fc" }, "shape": { "type": "circle" }, "opacity": { "value": 0.4 }, "size": { "value": 3, "random": true }, "line_linked": { "enable": true, "distance": 150, "color": "#c084fc", "opacity": 0.3, "width": 1 }, "move": { "enable": true, "speed": 1.5 } },
+            "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true } }, "retina_detect": true
+        });
+
+        // 2. LOGIKA BARU: Animasi Scroll Berulang (Muncul dan Menghilang)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { 
+                if (entry.isIntersecting) {
+                    // Munculkan elemen (Tambahkan class animate-show)
+                    entry.target.classList.add('animate-show');
+                    
+                    // Jalankan Progress Bar
+                    const progressBars = entry.target.querySelectorAll('.skill-progress');
+                    progressBars.forEach(bar => {
+                        bar.style.width = bar.getAttribute('data-width');
+                    });
+                } else {
+                    // Sembunyikan elemen saat keluar dari layar (Hapus class animate-show)
+                    entry.target.classList.remove('animate-show');
+                    
+                    // Reset Progress Bar ke 0 agar bisa dianimasikan lagi nanti
+                    const progressBars = entry.target.querySelectorAll('.skill-progress');
+                    progressBars.forEach(bar => {
+                        bar.style.width = '0';
+                    });
+                }
+            });
+        }, { threshold: 0.15 }); // threshold 0.15 agar efek lebih terasa saat sedikit terlihat
+
+        // Terapkan observer ke semua elemen yang memiliki class animate-hidden
+        document.querySelectorAll('.animate-hidden').forEach(el => observer.observe(el));
+
+        // 3. Setup Kursor Interaktif
+        if(window.innerWidth > 768) {
+            const cursorDot = document.querySelector('.cursor-dot');
+            const cursorOutline = document.querySelector('.cursor-outline');
+            
+            window.addEventListener('mousemove', (e) => {
+                const posX = e.clientX; const posY = e.clientY;
+                cursorDot.style.left = `${posX}px`; cursorDot.style.top = `${posY}px`;
+                cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
+            });
+
+            document.querySelectorAll('a, button, .card, .skill-img, .profile-img').forEach(el => {
+                el.addEventListener('mouseover', () => document.body.classList.add('cursor-hover'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+            });
+        }
+    </script>
+</body>
+</html>
