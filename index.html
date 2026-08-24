@@ -38,7 +38,10 @@
         }
 
         body { background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; cursor: none; transition: background-color 0.5s ease, color 0.5s ease; }
-        
+        body[dir="rtl"] { text-align: right; }
+        body[dir="rtl"] .hero-content, body[dir="rtl"] .skills-wrapper, body[dir="rtl"] .card { text-align: right; }
+        body[dir="rtl"] .skill-box p { flex-direction: row-reverse; }
+
         /* === PARTIKEL BACKGROUND === */
         #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; }
         body.light-mode #particles-js { opacity: 0.5; filter: invert(1); }
@@ -57,14 +60,64 @@
         .logo span { color: var(--accent-color); text-shadow: 0 0 10px rgba(168, 85, 247, 0.5); }
         
         .nav-right { display: flex; align-items: center; gap: 30px; }
-        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .nav-links { display: flex; list-style: none; gap: 30px; align-items: center;}
         .nav-links a { color: var(--text-color); text-decoration: none; font-weight: 600; position: relative; padding-bottom: 5px; transition: color 0.3s; }
         .nav-links a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 0; background-color: var(--accent-color); transition: width 0.3s ease-in-out; box-shadow: 0 0 8px var(--accent-color); }
         .nav-links a:hover { color: var(--accent-color); }
         .nav-links a:hover::after { width: 100%; }
 
+        /* Container Pengaturan (Tema & Bahasa) */
+        .settings-controls { display: flex; align-items: center; gap: 20px; }
+
         .theme-toggle { background: none; border: none; color: var(--text-color); font-size: 1.4rem; transition: transform 0.3s ease, color 0.3s ease; }
         .theme-toggle:hover { color: var(--accent-color); transform: scale(1.2) rotate(15deg); }
+
+        /* === DESAIN SAKLAR BAHASA MODERN === */
+        .lang-switch-container {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 4px;
+            width: 140px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .lang-slider {
+            position: absolute;
+            top: 4px;
+            bottom: 4px;
+            left: 4px;
+            width: calc((100% - 8px) / 3);
+            background: var(--accent-color);
+            border-radius: 25px;
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Efek membal (bouncy) */
+            z-index: 1;
+            box-shadow: 0 2px 10px rgba(168, 85, 247, 0.5);
+        }
+
+        .lang-btn {
+            position: relative;
+            z-index: 2;
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            padding: 6px 0;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-align: center;
+            cursor: none;
+            transition: color 0.3s ease;
+        }
+
+        /* Warna teks saat tombol aktif */
+        .lang-btn.active {
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
 
         /* === LAYOUT UMUM === */
         section { min-height: 100vh; padding: 120px 10%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
@@ -100,9 +153,13 @@
         .skills-container { flex: 1; width: 100%; }
         .skill-box { margin-bottom: 25px; transition: transform 0.3s ease; }
         .skill-box:hover { transform: translateX(10px); }
+        body[dir="rtl"] .skill-box:hover { transform: translateX(-10px); }
         .skill-box p { font-weight: 600; margin-bottom: 8px; display: flex; justify-content: space-between; }
         .skill-bar { width: 100%; height: 12px; background: var(--skill-bg); border-radius: 10px; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.2); }
+        
         .skill-progress { width: 0; height: 100%; background: linear-gradient(90deg, var(--accent-light), var(--accent-color)); border-radius: 10px; transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1); box-shadow: 0 0 10px var(--accent-color); }
+        body[dir="rtl"] .skill-progress { float: right; background: linear-gradient(270deg, var(--accent-light), var(--accent-color)); }
+
         .skills-photos { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; perspective: 1000px; }
         .skill-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 15px; background-color: var(--card-bg); transform-style: preserve-3d; }
 
@@ -118,14 +175,13 @@
         #kontak { min-height: 60vh; padding-top: 60px; }
         .social-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; width: 100%; max-width: 800px; }
         
-        /* BUG FIX: Lebar tombol dibuat seragam */
         .social-btn { 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             gap: 12px; 
             padding: 15px 30px; 
-            min-width: 180px; /* Ukuran seragam */
+            min-width: 180px;
             border-radius: 50px; 
             font-size: 1.1rem; 
             font-weight: 600; 
@@ -137,6 +193,7 @@
             transition: all 0.3s ease; 
             transform-style: preserve-3d; 
         }
+        body[dir="rtl"] .social-btn { flex-direction: row-reverse; }
         
         .social-btn i { font-size: 1.5rem; transform: translateZ(10px); transition: 0.3s; }
         
@@ -156,24 +213,27 @@
             body, a, button, .card, .skill-img, .profile-img { cursor: auto; }
             .cursor-dot, .cursor-outline { display: none !important; } 
             
-            nav { padding: 15px 5%; flex-direction: column; text-align: center; justify-content: center; position: fixed; }
-            .logo { margin-bottom: 10px; }
-            .nav-right { width: 100%; justify-content: center; gap: 10px; }
+            nav { padding: 15px 5%; flex-direction: column; text-align: center; justify-content: center; position: fixed; gap: 15px;}
+            
+            .nav-top-mobile { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+            .logo { margin-bottom: 0; }
+            
+            .nav-right { width: 100%; justify-content: center; gap: 10px; flex-direction: column; }
             .nav-links { gap: 15px; font-size: 0.85rem; flex-wrap: wrap; justify-content: center; }
             
-            /* BUG FIX: Posisi tombol tema diperbaiki */
-            .theme-toggle { position: absolute; top: 15px; right: 5%; } 
-            
-            section { padding: 140px 5% 50px; }
+            section { padding: 170px 5% 50px; }
             .hero-container { flex-direction: column-reverse; text-align: center; gap: 20px; }
             .hero-content { text-align: center; animation: none; } 
             .hero-content h1 { font-size: 2.2rem; }
+            body[dir="rtl"] .hero-content { text-align: center; }
             
             .profile-img { max-width: 220px; margin-bottom: 10px; }
             
             .skills-wrapper { flex-direction: column; gap: 30px; }
             .skills-photos { grid-template-columns: 1fr; }
             .project-grid { grid-template-columns: 1fr; gap: 20px; }
+            body[dir="rtl"] .skills-wrapper { text-align: center; }
+            body[dir="rtl"] .card { text-align: center; }
 
             .social-btn { width: 100%; max-width: 300px; }
         }
@@ -186,16 +246,30 @@
     <div class="cursor-outline"></div>
 
     <nav>
-        <div class="logo">My<span>Portofolio</span>.</div>
-        <button class="theme-toggle" id="themeBtn" aria-label="Ganti Tema">
-            <i class="fas fa-moon"></i>
-        </button>
+        <div class="nav-top-mobile">
+            <div class="logo">My<span>Portofolio</span>.</div>
+            <div class="settings-controls">
+                <button class="theme-toggle" id="themeBtn" aria-label="Ganti Tema">
+                    <i class="fas fa-moon"></i>
+                </button>
+                
+                <!-- SAKLAR BAHASA MODERN -->
+                <!-- Atribut dir="ltr" memastikan animasi geser saklar tidak terbalik saat beralih ke mode Arab -->
+                <div class="lang-switch-container" dir="ltr">
+                    <div class="lang-slider" id="langSlider"></div>
+                    <button class="lang-btn active" data-lang="id" data-idx="0">ID</button>
+                    <button class="lang-btn" data-lang="en" data-idx="1">EN</button>
+                    <button class="lang-btn" data-lang="ar" data-idx="2">AR</button>
+                </div>
+
+            </div>
+        </div>
         <div class="nav-right">
             <ul class="nav-links">
-                <li><a href="#beranda">Beranda</a></li>
-                <li><a href="#keahlian">Keahlian</a></li>
-                <li><a href="#tugas">Tugas</a></li>
-                <li><a href="#kontak">Kontak</a></li>
+                <li><a href="#beranda" data-i18n="nav-home">Beranda</a></li>
+                <li><a href="#keahlian" data-i18n="nav-skills">Keahlian</a></li>
+                <li><a href="#tugas" data-i18n="nav-portfolio">Tugas</a></li>
+                <li><a href="#kontak" data-i18n="nav-contact">Kontak</a></li>
             </ul>
         </div>
     </nav>
@@ -203,10 +277,10 @@
     <section id="beranda" class="hero">
         <div class="hero-container">
             <div class="hero-content animate-hidden">
-                <h1>Halo, Saya <br><span style="color: var(--accent-color); text-shadow: 0 0 15px rgba(168, 85, 247, 0.6);">Abi Muhammad</span></h1>
-                <h2>Siswa SMA NEGERI 1 PASIR SAKTI</h2>
-                <p>Hi, I am a student who has an interest in the world of coding and I will continue to develop my coding skills.</p>
-                <a href="#tugas" class="btn">Lihat Proyek Saya</a>
+                <h1><span data-i18n="hero-greeting">Halo, Saya</span> <br><span style="color: var(--accent-color); text-shadow: 0 0 15px rgba(168, 85, 247, 0.6);" data-i18n="hero-name">Abi Muhammad</span></h1>
+                <h2 data-i18n="hero-subtitle">Siswa SMA NEGERI 1 PASIR SAKTI</h2>
+                <p data-i18n="hero-desc">Hai, saya seorang siswa yang memiliki ketertarikan di dunia pemrograman dan saya akan terus mengembangkan kemampuan coding saya.</p>
+                <a href="#tugas" class="btn" data-i18n="hero-btn">Lihat Proyek Saya</a>
             </div>
             <!-- Wrapper Gambar Profil -->
             <div class="hero-image-wrapper animate-hidden" id="profileWrapper" style="transition-delay: 200ms;">
@@ -222,11 +296,11 @@
     </section>
 
     <section id="keahlian">
-        <h2 class="section-title animate-hidden">Skills</h2>
+        <h2 class="section-title animate-hidden" data-i18n="skills-title">Keahlian</h2>
         <div class="skills-wrapper animate-hidden">
             <div class="skills-container">
                 <div class="skill-box">
-                    <p><span>Manage Sound system</span> <span>80%</span></p>
+                    <p><span data-i18n="skill-1">Mengelola Sound system</span> <span>80%</span></p>
                     <div class="skill-bar"><div class="skill-progress" data-width="85%"></div></div>
                 </div>
                 <div class="skill-box">
@@ -234,7 +308,7 @@
                     <div class="skill-bar"><div class="skill-progress" data-width="70%"></div></div>
                 </div>
                 <div class="skill-box">
-                    <p><span>Elektronika</span> <span>75%</span></p>
+                    <p><span data-i18n="skill-3">Elektronika</span> <span>75%</span></p>
                     <div class="skill-bar"><div class="skill-progress" data-width="75%"></div></div>
                 </div>
             </div>
@@ -246,28 +320,28 @@
     </section>
 
     <section id="tugas">
-        <h2 class="section-title animate-hidden">Tugas & Proyek</h2>
+        <h2 class="section-title animate-hidden" data-i18n="proj-title">Tugas & Proyek</h2>
         <div class="project-grid">
             <div class="card animate-hidden" data-tilt data-tilt-glare data-tilt-max-glare="0.2" data-tilt-scale="1.02">
-                <h3>Yearbook Web Angkatan</h3>
-                <span>Kenangan Wisuda</span>
-                <p>Membuat antarmuka web untuk Menyimpan Foto.</p>
+                <h3 data-i18n="proj-1-title">Yearbook Web Angkatan</h3>
+                <span data-i18n="proj-1-tag">Kenangan Wisuda</span>
+                <p data-i18n="proj-1-desc">Membuat antarmuka web untuk Menyimpan Foto.</p>
             </div>
             <div class="card animate-hidden" data-tilt data-tilt-glare data-tilt-max-glare="0.2" data-tilt-scale="1.02" style="transition-delay: 150ms;">
-                <h3>Kalkulator Interaktif</h3>
-                <span>Tugas Mandiri</span>
-                <p>Aplikasi web untuk menghitung rumus matematika dasar dengan tampilan elegan.</p>
+                <h3 data-i18n="proj-2-title">Kalkulator Interaktif</h3>
+                <span data-i18n="proj-2-tag">Tugas Mandiri</span>
+                <p data-i18n="proj-2-desc">Aplikasi web untuk menghitung rumus matematika dasar dengan tampilan elegan.</p>
             </div>
             <div class="card animate-hidden" data-tilt data-tilt-glare data-tilt-max-glare="0.2" data-tilt-scale="1.02" style="transition-delay: 300ms;">
-                <h3>Desain Mockup App</h3>
-                <span>Sekolah</span>
-                <p>Mendesain prototipe aplikasi.</p>
+                <h3 data-i18n="proj-3-title">Desain Mockup App</h3>
+                <span data-i18n="proj-3-tag">Sekolah</span>
+                <p data-i18n="proj-3-desc">Mendesain prototipe aplikasi.</p>
             </div>
         </div>
     </section>
 
     <section id="kontak">
-        <h2 class="section-title animate-hidden">Hubungi Saya</h2>
+        <h2 class="section-title animate-hidden" data-i18n="contact-title">Hubungi Saya</h2>
         <div class="social-links animate-hidden">
             <a href="https://wa.me/6285809867532" target="_blank" class="social-btn whatsapp" data-tilt data-tilt-scale="1.05">
                 <i class="fab fa-whatsapp"></i> WhatsApp
@@ -290,6 +364,119 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
     
     <script>
+        // === KAMUS BAHASA (DICTIONARY) ===
+        const translations = {
+            "id": {
+                "nav-home": "Beranda",
+                "nav-skills": "Keahlian",
+                "nav-portfolio": "Tugas",
+                "nav-contact": "Kontak",
+                "hero-greeting": "Halo, Saya",
+                "hero-name": "Abi Muhammad",
+                "hero-subtitle": "Siswa SMA NEGERI 1 PASIR SAKTI",
+                "hero-desc": "saya seorang siswa yang memiliki ketertarikan di dunia pemrograman dan saya akan terus mengembangkan kemampuan coding saya.",
+                "hero-btn": "Lihat Proyek Saya",
+                "skills-title": "Keahlian",
+                "skill-1": "Mengelola Sound system",
+                "skill-3": "Elektronika",
+                "proj-title": "Tugas & Proyek",
+                "proj-1-title": "Yearbook Web Angkatan",
+                "proj-1-tag": "Kenangan Wisuda",
+                "proj-1-desc": "Membuat antarmuka web untuk Menyimpan Foto.",
+                "proj-2-title": "Kalkulator Interaktif",
+                "proj-2-tag": "Tugas Mandiri",
+                "proj-2-desc": "Aplikasi web untuk menghitung rumus matematika dasar dengan tampilan elegan.",
+                "proj-3-title": "Desain Mockup App",
+                "proj-3-tag": "Sekolah",
+                "proj-3-desc": "Mendesain prototipe aplikasi."
+            },
+            "en": {
+                "nav-home": "Home",
+                "nav-skills": "Skills",
+                "nav-portfolio": "Tasks",
+                "nav-contact": "Contact",
+                "hero-greeting": "Hello, I am",
+                "hero-name": "Abi Muhammad",
+                "hero-subtitle": "Student at SMA NEGERI 1 PASIR SAKTI",
+                "hero-desc": "I am a student who has an interest in the world of coding and I will continue to develop my coding skills.",
+                "hero-btn": "View My Projects",
+                "skills-title": "Skills",
+                "skill-1": "Manage Sound System",
+                "skill-3": "Electronics",
+                "proj-title": "Tasks & Projects",
+                "proj-1-title": "Batch Yearbook Web",
+                "proj-1-tag": "Graduation Memories",
+                "proj-1-desc": "Creating a web interface for storing photos.",
+                "proj-2-title": "Interactive Calculator",
+                "proj-2-tag": "Independent Task",
+                "proj-2-desc": "A web application for calculating basic mathematical formulas with an elegant display.",
+                "proj-3-title": "App Mockup Design",
+                "proj-3-tag": "School",
+                "proj-3-desc": "Designing application prototypes."
+            },
+            "ar": {
+                "nav-home": "الرئيسية",
+                "nav-skills": "المهارات",
+                "nav-portfolio": "المهام",
+                "nav-contact": "اتصل",
+                "hero-greeting": "مرحباً، أنا",
+                "hero-name": "أبي محمد",
+                "hero-subtitle": "طالب في مدرسة SMA NEGERI 1 PASIR SAKTI",
+                "hero-desc": "أنا طالب مهتم بعالم البرمجة وسأستمر في تطوير مهاراتي في البرمجة.",
+                "hero-btn": "عرض مشاريعي",
+                "skills-title": "المهارات",
+                "skill-1": "إدارة نظام الصوت",
+                "skill-3": "إلكترونيات",
+                "proj-title": "المهام والمشاريع",
+                "proj-1-title": "موقع الكتاب السنوي للدفعة",
+                "proj-1-tag": "ذكريات التخرج",
+                "proj-1-desc": "إنشاء واجهة ويب لتخزين الصور.",
+                "proj-2-title": "آلة حاسبة تفاعلية",
+                "proj-2-tag": "مهمة مستقلة",
+                "proj-2-desc": "تطبيق ويب لحساب الصيغ الرياضية الأساسية مع عرض أنيق.",
+                "proj-3-title": "تصميم نموذج التطبيق",
+                "proj-3-tag": "مدرسة",
+                "proj-3-desc": "تصميم نماذج التطبيقات.",
+                "contact-title": "اتصل بي"
+            }
+        };
+
+        // === LOGIKA SAKLAR BAHASA ===
+        const langBtns = document.querySelectorAll('.lang-btn');
+        const langSlider = document.getElementById('langSlider');
+
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // 1. Ubah Style Tombol Aktif
+                langBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // 2. Gerakkan Latar Belakang (Pil) ke Tombol yang Diklik
+                const idx = btn.getAttribute('data-idx');
+                // Menggeser background sesuai dengan indeks kolom (0%, 100%, atau 200%)
+                langSlider.style.transform = `translateX(${idx * 100}%)`;
+
+                // 3. Proses Terjemahan
+                const currentLang = btn.getAttribute('data-lang');
+                
+                // Atur arah teks (RTL untuk Arab, LTR untuk sisanya)
+                document.documentElement.lang = currentLang;
+                if(currentLang === 'ar') {
+                    document.body.setAttribute('dir', 'rtl');
+                } else {
+                    document.body.removeAttribute('dir');
+                }
+
+                // Ubah teks
+                document.querySelectorAll('[data-i18n]').forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    if(translations[currentLang][key]) {
+                        element.textContent = translations[currentLang][key];
+                    }
+                });
+            });
+        });
+
         // 1. Setup Partikel Background
         particlesJS('particles-js', {
             "particles": { "number": { "value": 60 }, "color": { "value": "#a855f7" }, "shape": { "type": "circle" }, "opacity": { "value": 0.3 }, "size": { "value": 3, "random": true }, "line_linked": { "enable": true, "distance": 150, "color": "#a855f7", "opacity": 0.2, "width": 1 }, "move": { "enable": true, "speed": 1.2 } },
@@ -344,16 +531,13 @@
             }
         });
 
-        // 5. BUG FIX: LOGIKA ANIMASI FOTO PROFIL SAAT SCROLL (DIPERBAIKI)
+        // 5. LOGIKA ANIMASI FOTO PROFIL SAAT SCROLL
         const profileWrapper = document.getElementById('profileWrapper');
 
         window.addEventListener('scroll', () => {
-            // Jika user scroll lebih dari 150px dari atas, foto disembunyikan
             if (window.scrollY > 150) {
                 profileWrapper.classList.add('scrolled-out');
-            } 
-            // Jika user kembali ke atas, foto dimunculkan lagi
-            else {
+            } else {
                 profileWrapper.classList.remove('scrolled-out');
             }
         });
