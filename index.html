@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portofolio Abi</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome untuk Ikon Sosial Media & Tema -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -14,7 +14,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
         
         :root { 
-            /* Variabel Mode Gelap (Default) */
             --bg-color: #0a0410; 
             --text-color: #f3e8ff; 
             --accent-color: #a855f7; 
@@ -25,7 +24,6 @@
             --border-color: rgba(168, 85, 247, 0.2);
         }
 
-        /* Variabel Mode Terang */
         body.light-mode {
             --bg-color: #f8fafc; 
             --text-color: #1e1b4b; 
@@ -38,9 +36,69 @@
         }
 
         body { background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; cursor: none; transition: background-color 0.5s ease, color 0.5s ease; }
+        
+        /* Mengunci scroll saat animasi welcome berjalan */
+        body.loading { overflow: hidden; }
+
         body[dir="rtl"] { text-align: right; }
         body[dir="rtl"] .hero-content, body[dir="rtl"] .skills-wrapper, body[dir="rtl"] .card { text-align: right; }
         body[dir="rtl"] .skill-box p { flex-direction: row-reverse; }
+
+        /* === ANIMASI PENYAMBUT (WELCOME SCREEN) YANG LEBIH KEREN === */
+        .welcome-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background-color: #050208; /* Latar yang lebih pekat */
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 999999;
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .welcome-screen.hide { transform: translateY(-100%); }
+        
+        .welcome-text-container {
+            display: flex; flex-direction: column; align-items: center; text-transform: uppercase;
+        }
+        
+        .welcome-text {
+            font-size: 1.2rem; font-weight: 300; letter-spacing: 6px; color: var(--accent-light);
+            opacity: 0; transform: translateY(20px);
+            animation: textReveal 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+        }
+        .welcome-text:nth-child(1) { animation-delay: 0.3s; }
+        .welcome-text:nth-child(3) { animation-delay: 0.7s; }
+
+        .welcome-highlight {
+            font-size: 5rem; font-weight: 800; letter-spacing: 8px; margin: 10px 0;
+            color: transparent; /* Teks aslinya transparan */
+            -webkit-text-stroke: 2px rgba(168, 85, 247, 0.5); /* Garis luar */
+            position: relative; opacity: 0; transform: scale(0.9);
+            animation: highlightReveal 1s cubic-bezier(0.77, 0, 0.175, 1) forwards 0.5s;
+        }
+        
+        /* Efek sapuan warna dari kiri ke kanan */
+        .welcome-highlight::before {
+            content: "PORTOFOLIO"; position: absolute; left: 0; top: 0;
+            width: 0; height: 100%; color: var(--accent-color);
+            -webkit-text-stroke: 0px transparent; overflow: hidden;
+            border-right: 4px solid #fff; /* Kursor sapuan */
+            filter: drop-shadow(0 0 20px var(--accent-color));
+            animation: fillText 1.2s cubic-bezier(0.77, 0, 0.175, 1) forwards 1.3s;
+        }
+
+        @keyframes textReveal { to { opacity: 1; transform: translateY(0); } }
+        @keyframes highlightReveal { to { opacity: 1; transform: scale(1); } }
+        @keyframes fillText { 
+            0% { width: 0; border-right-color: #fff; }
+            90% { width: 100%; border-right-color: #fff; }
+            100% { width: 100%; border-right-color: transparent; } /* Sembunyikan kursor di akhir */
+        }
+
+        /* === SCROLL PROGRESS BAR === */
+        .scroll-progress { position: fixed; top: 0; left: 0; height: 4px; background: linear-gradient(90deg, var(--accent-light), var(--accent-color)); width: 0%; z-index: 10001; transition: width 0.1s; box-shadow: 0 0 10px var(--accent-color); }
+
+        /* === BACK TO TOP BUTTON === */
+        .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: var(--accent-color); color: #fff; border: none; font-size: 1.2rem; cursor: none; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s ease; z-index: 999; box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4); }
+        .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        .back-to-top:hover { background: var(--accent-light); transform: translateY(-5px); }
 
         /* === PARTIKEL BACKGROUND === */
         #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; }
@@ -66,89 +124,43 @@
         .nav-links a:hover { color: var(--accent-color); }
         .nav-links a:hover::after { width: 100%; }
 
-        /* Container Pengaturan (Tema & Bahasa) */
         .settings-controls { display: flex; align-items: center; gap: 20px; }
-
         .theme-toggle { background: none; border: none; color: var(--text-color); font-size: 1.4rem; transition: transform 0.3s ease, color 0.3s ease; }
         .theme-toggle:hover { color: var(--accent-color); transform: scale(1.2) rotate(15deg); }
 
-        /* === DESAIN SAKLAR BAHASA MODERN === */
-        .lang-switch-container {
-            position: relative;
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            background: rgba(168, 85, 247, 0.1);
-            border: 1px solid var(--border-color);
-            border-radius: 30px;
-            padding: 4px;
-            width: 140px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
-        }
-        
-        .lang-slider {
-            position: absolute;
-            top: 4px;
-            bottom: 4px;
-            left: 4px;
-            width: calc((100% - 8px) / 3);
-            background: var(--accent-color);
-            border-radius: 25px;
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Efek membal (bouncy) */
-            z-index: 1;
-            box-shadow: 0 2px 10px rgba(168, 85, 247, 0.5);
-        }
-
-        .lang-btn {
-            position: relative;
-            z-index: 2;
-            background: transparent;
-            border: none;
-            color: var(--text-color);
-            padding: 6px 0;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.75rem;
-            text-align: center;
-            cursor: none;
-            transition: color 0.3s ease;
-        }
-
-        /* Warna teks saat tombol aktif */
-        .lang-btn.active {
-            color: #ffffff;
-            text-shadow: 0 0 5px rgba(255,255,255,0.5);
-        }
+        /* === DESAIN SAKLAR BAHASA === */
+        .lang-switch-container { position: relative; display: grid; grid-template-columns: 1fr 1fr 1fr; background: rgba(168, 85, 247, 0.1); border: 1px solid var(--border-color); border-radius: 30px; padding: 4px; width: 140px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.2); }
+        .lang-slider { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 8px) / 3); background: var(--accent-color); border-radius: 25px; transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 1; box-shadow: 0 2px 10px rgba(168, 85, 247, 0.5); }
+        .lang-btn { position: relative; z-index: 2; background: transparent; border: none; color: var(--text-color); padding: 6px 0; border-radius: 20px; font-weight: 700; font-size: 0.75rem; text-align: center; cursor: none; transition: color 0.3s ease; }
+        .lang-btn.active { color: #ffffff; text-shadow: 0 0 5px rgba(255,255,255,0.5); }
 
         /* === LAYOUT UMUM === */
         section { min-height: 100vh; padding: 120px 10%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .section-title { font-size: 36px; color: var(--accent-color); margin-bottom: 50px; text-shadow: 0 0 15px rgba(168, 85, 247, 0.4); }
         
-        /* === ANIMASI MENGAMBANG & SCROLL === */
+        /* === HERO SECTION === */
         @keyframes floating { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
         
         .hero-image-wrapper { flex: 1; display: flex; justify-content: center; position: relative; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease; }
         .hero-image-wrapper.scrolled-out { transform: translateY(-80px) scale(0.9); opacity: 0; pointer-events: none; }
 
-        /* === HERO SECTION === */
         .hero-container { display: flex; flex-direction: row; align-items: center; justify-content: space-between; width: 100%; max-width: 1100px; gap: 50px; }
         .hero-content { flex: 1; text-align: left; animation: floating 4s ease-in-out infinite; }
         .hero-content h1 { font-size: 3.5rem; margin-bottom: 10px; line-height: 1.2; }
-        .hero-content h2 { font-size: 1.5rem; font-weight: 400; color: var(--accent-light); margin-bottom: 20px; }
+        .hero-content h2 { font-size: 1.5rem; font-weight: 400; color: var(--accent-light); margin-bottom: 20px; min-height: 36px;}
         .hero-content p { font-size: 1.1rem; opacity: 0.8; margin-bottom: 40px; max-width: 500px; line-height: 1.6; }
         
-        .profile-img { 
-            width: 100%; max-width: 350px; aspect-ratio: 1/1; object-fit: cover; border-radius: 50%; 
-            border: 4px solid var(--accent-color); 
-            box-shadow: 0 0 30px rgba(168, 85, 247, 0.4), inset 0 0 20px rgba(168, 85, 247, 0.4); 
-            animation: floating 4s ease-in-out infinite; animation-delay: 1s; transform-style: preserve-3d;
-        }
+        .profile-img { width: 100%; max-width: 350px; aspect-ratio: 1/1; object-fit: cover; border-radius: 50%; border: 4px solid var(--accent-color); box-shadow: 0 0 30px rgba(168, 85, 247, 0.4), inset 0 0 20px rgba(168, 85, 247, 0.4); animation: floating 4s ease-in-out infinite; animation-delay: 1s; transform-style: preserve-3d; }
 
-        .btn { padding: 12px 35px; background: var(--accent-color); color: #fff; text-decoration: none; font-weight: 700; border-radius: 30px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: inline-block; position: relative; overflow: hidden; z-index: 1; }
-        .btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: left 0.5s ease; z-index: -1; }
-        .btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 25px rgba(168, 85, 247, 0.4); background: var(--accent-light); }
-        .btn:hover::before { left: 100%; }
+        .btn-group { display: flex; gap: 15px; flex-wrap: wrap; }
+        .btn { padding: 12px 30px; background: var(--accent-color); color: #fff; text-decoration: none; font-weight: 700; border-radius: 30px; transition: all 0.3s ease; position: relative; overflow: hidden; z-index: 1; border: 2px solid var(--accent-color); display: inline-block; }
+        .btn:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(168, 85, 247, 0.4); }
 
-        /* === SKILLS & FOTO === */
+        /* === TYPEWRITER CURSOR === */
+        .typing-cursor { display: inline-block; width: 3px; background-color: var(--accent-color); margin-left: 5px; animation: blink 1s step-end infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* === SKILLS === */
         .skills-wrapper { display: flex; flex-direction: row; gap: 50px; width: 100%; max-width: 1100px; align-items: center; text-align: left; }
         .skills-container { flex: 1; width: 100%; }
         .skill-box { margin-bottom: 25px; transition: transform 0.3s ease; }
@@ -156,7 +168,6 @@
         body[dir="rtl"] .skill-box:hover { transform: translateX(-10px); }
         .skill-box p { font-weight: 600; margin-bottom: 8px; display: flex; justify-content: space-between; }
         .skill-bar { width: 100%; height: 12px; background: var(--skill-bg); border-radius: 10px; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.2); }
-        
         .skill-progress { width: 0; height: 100%; background: linear-gradient(90deg, var(--accent-light), var(--accent-color)); border-radius: 10px; transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1); box-shadow: 0 0 10px var(--accent-color); }
         body[dir="rtl"] .skill-progress { float: right; background: linear-gradient(270deg, var(--accent-light), var(--accent-color)); }
 
@@ -172,31 +183,13 @@
         .card p { opacity: 0.8; line-height: 1.5; transform: translateZ(20px); }
 
         /* === KONTAK (SOSIAL MEDIA) === */
-        #kontak { min-height: 60vh; padding-top: 60px; }
-        .social-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; width: 100%; max-width: 800px; }
+        #kontak { min-height: 70vh; padding-top: 60px; }
+        .contact-wrapper { display: flex; flex-direction: column; gap: 40px; width: 100%; max-width: 800px; align-items: center; }
         
-        .social-btn { 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 12px; 
-            padding: 15px 30px; 
-            min-width: 180px;
-            border-radius: 50px; 
-            font-size: 1.1rem; 
-            font-weight: 600; 
-            text-decoration: none; 
-            color: var(--text-color); 
-            background: var(--card-bg); 
-            backdrop-filter: blur(5px); 
-            border: 1px solid var(--border-color); 
-            transition: all 0.3s ease; 
-            transform-style: preserve-3d; 
-        }
+        .social-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; width: 100%; }
+        .social-btn { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 15px 30px; min-width: 180px; border-radius: 50px; font-size: 1.1rem; font-weight: 600; text-decoration: none; color: var(--text-color); background: var(--card-bg); backdrop-filter: blur(5px); border: 1px solid var(--border-color); transition: all 0.3s ease; transform-style: preserve-3d; }
         body[dir="rtl"] .social-btn { flex-direction: row-reverse; }
-        
         .social-btn i { font-size: 1.5rem; transform: translateZ(10px); transition: 0.3s; }
-        
         .social-btn.whatsapp:hover { background: #25D366; color: white; border-color: #25D366; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4); }
         .social-btn.instagram:hover { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: white; border-color: #dc2743; box-shadow: 0 10px 25px rgba(220, 39, 67, 0.4); }
         .social-btn.tiktok:hover { background: #000000; color: white; border-color: #69C9D0; box-shadow: -5px 5px 15px rgba(105, 201, 208, 0.4), 5px -5px 15px rgba(238, 29, 82, 0.4); }
@@ -204,7 +197,7 @@
         /* === FOOTER === */
         footer { padding: 30px; text-align: center; background: var(--glass-bg); border-top: 1px solid var(--border-color); font-size: 0.9rem; color: var(--accent-color); transition: background 0.5s ease; }
 
-        /* === KELAS ANIMASI SCROLL REVEAL === */
+        /* === ANIMASI SCROLL === */
         .animate-hidden { opacity: 0; transform: translateY(50px) scale(0.98); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
         .animate-show { opacity: 1; transform: translateY(0) scale(1); }
 
@@ -213,33 +206,48 @@
             body, a, button, .card, .skill-img, .profile-img { cursor: auto; }
             .cursor-dot, .cursor-outline { display: none !important; } 
             
+            /* PENGATURAN UKURAN TEKS WELCOME UNTUK MOBILE */
+            .welcome-text { font-size: 0.9rem; letter-spacing: 4px; }
+            .welcome-highlight { font-size: 2.8rem; letter-spacing: 4px; }
+
             nav { padding: 15px 5%; flex-direction: column; text-align: center; justify-content: center; position: fixed; gap: 15px;}
-            
             .nav-top-mobile { display: flex; justify-content: space-between; align-items: center; width: 100%; }
             .logo { margin-bottom: 0; }
-            
             .nav-right { width: 100%; justify-content: center; gap: 10px; flex-direction: column; }
             .nav-links { gap: 15px; font-size: 0.85rem; flex-wrap: wrap; justify-content: center; }
-            
             section { padding: 170px 5% 50px; }
             .hero-container { flex-direction: column-reverse; text-align: center; gap: 20px; }
             .hero-content { text-align: center; animation: none; } 
             .hero-content h1 { font-size: 2.2rem; }
-            body[dir="rtl"] .hero-content { text-align: center; }
+            .btn-group { justify-content: center; }
             
-            .profile-img { max-width: 220px; margin-bottom: 10px; }
+            .profile-img { max-width: 160px; margin-bottom: 15px; } 
             
             .skills-wrapper { flex-direction: column; gap: 30px; }
             .skills-photos { grid-template-columns: 1fr; }
             .project-grid { grid-template-columns: 1fr; gap: 20px; }
-            body[dir="rtl"] .skills-wrapper { text-align: center; }
-            body[dir="rtl"] .card { text-align: center; }
-
             .social-btn { width: 100%; max-width: 300px; }
         }
     </style>
 </head>
-<body>
+<body class="loading">
+    
+    <!-- === LAYAR PENYAMBUT (DIUBAH MENJADI LEBIH KEREN) === -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-text-container">
+            <span class="welcome-text">WELCOME TO MY</span>
+            <span class="welcome-highlight">PORTOFOLIO</span>
+            <span class="welcome-text">WEBSITE</span>
+        </div>
+    </div>
+
+    <!-- Indikator Scroll -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Tombol Back to Top -->
+    <button id="backToTop" class="back-to-top" aria-label="Kembali ke atas">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <div id="particles-js"></div>
     <div class="cursor-dot"></div>
@@ -252,16 +260,12 @@
                 <button class="theme-toggle" id="themeBtn" aria-label="Ganti Tema">
                     <i class="fas fa-moon"></i>
                 </button>
-                
-                <!-- SAKLAR BAHASA MODERN -->
-                <!-- Atribut dir="ltr" memastikan animasi geser saklar tidak terbalik saat beralih ke mode Arab -->
                 <div class="lang-switch-container" dir="ltr">
                     <div class="lang-slider" id="langSlider"></div>
                     <button class="lang-btn active" data-lang="id" data-idx="0">ID</button>
                     <button class="lang-btn" data-lang="en" data-idx="1">EN</button>
                     <button class="lang-btn" data-lang="ar" data-idx="2">AR</button>
                 </div>
-
             </div>
         </div>
         <div class="nav-right">
@@ -278,23 +282,22 @@
         <div class="hero-container">
             <div class="hero-content animate-hidden">
                 <h1><span data-i18n="hero-greeting">Halo, Saya</span> <br><span style="color: var(--accent-color); text-shadow: 0 0 15px rgba(168, 85, 247, 0.6);" data-i18n="hero-name">Abi Muhammad</span></h1>
-                <h2 data-i18n="hero-subtitle">Siswa SMA NEGERI 1 PASIR SAKTI</h2>
+                
+                <!-- Efek Mengetik Otomatis -->
+                <h2><span id="typingText"></span><span class="typing-cursor">&nbsp;</span></h2>
+                
                 <p data-i18n="hero-desc">Hai, saya seorang siswa yang memiliki ketertarikan di dunia pemrograman dan saya akan terus mengembangkan kemampuan coding saya.</p>
-                <a href="#tugas" class="btn" data-i18n="hero-btn">Lihat Proyek Saya</a>
+                <div class="btn-group">
+                    <a href="#tugas" class="btn" data-i18n="hero-btn">Lihat Proyek Saya</a>
+                </div>
             </div>
-            <!-- Wrapper Gambar Profil -->
             <div class="hero-image-wrapper animate-hidden" id="profileWrapper" style="transition-delay: 200ms;">
-                <img src="unnamed.jpg" 
-                     alt="Foto Profil Abi" 
-                     class="profile-img" 
-                     data-tilt 
-                     data-tilt-glare 
-                     data-tilt-max-glare="0.3" 
-                     data-tilt-scale="1.02">
+                <img src="unnamed.jpg" alt="Foto Profil Abi" class="profile-img" data-tilt data-tilt-glare data-tilt-max-glare="0.3" data-tilt-scale="1.02">
             </div>
         </div>
     </section>
 
+    <!-- (Sisa Section tetap sama) -->
     <section id="keahlian">
         <h2 class="section-title animate-hidden" data-i18n="skills-title">Keahlian</h2>
         <div class="skills-wrapper animate-hidden">
@@ -342,16 +345,18 @@
 
     <section id="kontak">
         <h2 class="section-title animate-hidden" data-i18n="contact-title">Hubungi Saya</h2>
-        <div class="social-links animate-hidden">
-            <a href="https://wa.me/6285809867532" target="_blank" class="social-btn whatsapp" data-tilt data-tilt-scale="1.05">
-                <i class="fab fa-whatsapp"></i> WhatsApp
-            </a>
-            <a href="https://instagram.com/abi._.muhammad_/" target="_blank" class="social-btn instagram" data-tilt data-tilt-scale="1.05" style="transition-delay: 150ms;">
-                <i class="fab fa-instagram"></i> Instagram
-            </a>
-            <a href="https://tiktok.com/@aby.uwoe" target="_blank" class="social-btn tiktok" data-tilt data-tilt-scale="1.05" style="transition-delay: 300ms;">
-                <i class="fab fa-tiktok"></i> TikTok
-            </a>
+        <div class="contact-wrapper">
+            <div class="social-links animate-hidden">
+                <a href="https://wa.me/6285809867532" target="_blank" class="social-btn whatsapp" data-tilt data-tilt-scale="1.05">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+                <a href="https://instagram.com/abi._.muhammad_/" target="_blank" class="social-btn instagram" data-tilt data-tilt-scale="1.05" style="transition-delay: 150ms;">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+                <a href="https://tiktok.com/@aby.uwoe" target="_blank" class="social-btn tiktok" data-tilt data-tilt-scale="1.05" style="transition-delay: 300ms;">
+                    <i class="fab fa-tiktok"></i> TikTok
+                </a>
+            </div>
         </div>
     </section>
 
@@ -364,79 +369,53 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
     
     <script>
-        // === KAMUS BAHASA (DICTIONARY) ===
+        // === LOGIKA ANIMASI PENYAMBUT ===
+        window.addEventListener('load', () => {
+            // Animasi splash screen diperpanjang menjadi 3.5 detik (3500ms) agar efek teks lebih terlihat
+            setTimeout(() => {
+                const welcomeScreen = document.getElementById('welcomeScreen');
+                welcomeScreen.classList.add('hide'); 
+                
+                setTimeout(() => {
+                    document.body.classList.remove('loading');
+                }, 800); 
+                
+            }, 3500); 
+        });
+
+        // === KAMUS BAHASA ===
         const translations = {
             "id": {
-                "nav-home": "Beranda",
-                "nav-skills": "Keahlian",
-                "nav-portfolio": "Tugas",
-                "nav-contact": "Kontak",
-                "hero-greeting": "Halo, Saya",
-                "hero-name": "Abi Muhammad",
-                "hero-subtitle": "Siswa SMA NEGERI 1 PASIR SAKTI",
-                "hero-desc": "saya seorang siswa yang memiliki ketertarikan di dunia pemrograman dan saya akan terus mengembangkan kemampuan coding saya.",
+                "nav-home": "Beranda", "nav-skills": "Keahlian", "nav-portfolio": "Tugas", "nav-contact": "Kontak",
+                "hero-greeting": "Halo, Saya", "hero-name": "Abi Muhammad", 
+                "hero-desc": "Hai, saya seorang siswa yang memiliki ketertarikan di dunia pemrograman dan saya akan terus mengembangkan kemampuan coding saya.",
                 "hero-btn": "Lihat Proyek Saya",
-                "skills-title": "Keahlian",
-                "skill-1": "Mengelola Sound system",
-                "skill-3": "Elektronika",
-                "proj-title": "Tugas & Proyek",
-                "proj-1-title": "Yearbook Web Angkatan",
-                "proj-1-tag": "Kenangan Wisuda",
-                "proj-1-desc": "Membuat antarmuka web untuk Menyimpan Foto.",
-                "proj-2-title": "Kalkulator Interaktif",
-                "proj-2-tag": "Tugas Mandiri",
-                "proj-2-desc": "Aplikasi web untuk menghitung rumus matematika dasar dengan tampilan elegan.",
-                "proj-3-title": "Desain Mockup App",
-                "proj-3-tag": "Sekolah",
-                "proj-3-desc": "Mendesain prototipe aplikasi."
+                "skills-title": "Keahlian", "skill-1": "Mengelola Sound system", "skill-3": "Elektronika",
+                "proj-title": "Tugas & Proyek", "proj-1-title": "Yearbook Web Angkatan", "proj-1-tag": "Kenangan Wisuda", "proj-1-desc": "Membuat antarmuka web untuk Menyimpan Foto.",
+                "proj-2-title": "Kalkulator Interaktif", "proj-2-tag": "Tugas Mandiri", "proj-2-desc": "Aplikasi web untuk menghitung rumus matematika dasar dengan tampilan elegan.",
+                "proj-3-title": "Desain Mockup App", "proj-3-tag": "Sekolah", "proj-3-desc": "Mendesain prototipe aplikasi.",
+                "contact-title": "Hubungi Saya"
             },
             "en": {
-                "nav-home": "Home",
-                "nav-skills": "Skills",
-                "nav-portfolio": "Tasks",
-                "nav-contact": "Contact",
-                "hero-greeting": "Hello, I am",
-                "hero-name": "Abi Muhammad",
-                "hero-subtitle": "Student at SMA NEGERI 1 PASIR SAKTI",
-                "hero-desc": "I am a student who has an interest in the world of coding and I will continue to develop my coding skills.",
+                "nav-home": "Home", "nav-skills": "Skills", "nav-portfolio": "Tasks", "nav-contact": "Contact",
+                "hero-greeting": "Hello, I am", "hero-name": "Abi Muhammad", 
+                "hero-desc": "Hi, I am a student who has an interest in the world of coding and I will continue to develop my coding skills.",
                 "hero-btn": "View My Projects",
-                "skills-title": "Skills",
-                "skill-1": "Manage Sound System",
-                "skill-3": "Electronics",
-                "proj-title": "Tasks & Projects",
-                "proj-1-title": "Batch Yearbook Web",
-                "proj-1-tag": "Graduation Memories",
-                "proj-1-desc": "Creating a web interface for storing photos.",
-                "proj-2-title": "Interactive Calculator",
-                "proj-2-tag": "Independent Task",
-                "proj-2-desc": "A web application for calculating basic mathematical formulas with an elegant display.",
-                "proj-3-title": "App Mockup Design",
-                "proj-3-tag": "School",
-                "proj-3-desc": "Designing application prototypes."
+                "skills-title": "Skills", "skill-1": "Manage Sound System", "skill-3": "Electronics",
+                "proj-title": "Tasks & Projects", "proj-1-title": "Batch Yearbook Web", "proj-1-tag": "Graduation Memories", "proj-1-desc": "Creating a web interface for storing photos.",
+                "proj-2-title": "Interactive Calculator", "proj-2-tag": "Independent Task", "proj-2-desc": "A web application for calculating basic mathematical formulas with an elegant display.",
+                "proj-3-title": "App Mockup Design", "proj-3-tag": "School", "proj-3-desc": "Designing application prototypes.",
+                "contact-title": "Contact Me"
             },
             "ar": {
-                "nav-home": "الرئيسية",
-                "nav-skills": "المهارات",
-                "nav-portfolio": "المهام",
-                "nav-contact": "اتصل",
-                "hero-greeting": "مرحباً، أنا",
-                "hero-name": "أبي محمد",
-                "hero-subtitle": "طالب في مدرسة SMA NEGERI 1 PASIR SAKTI",
-                "hero-desc": "أنا طالب مهتم بعالم البرمجة وسأستمر في تطوير مهاراتي في البرمجة.",
+                "nav-home": "الرئيسية", "nav-skills": "المهارات", "nav-portfolio": "المهام", "nav-contact": "اتصل",
+                "hero-greeting": "مرحباً، أنا", "hero-name": "أبي محمد", 
+                "hero-desc": "مرحباً، أنا طالب مهتم بعالم البرمجة وسأستمر في تطوير مهاراتي في البرمجة.",
                 "hero-btn": "عرض مشاريعي",
-                "skills-title": "المهارات",
-                "skill-1": "إدارة نظام الصوت",
-                "skill-3": "إلكترونيات",
-                "proj-title": "المهام والمشاريع",
-                "proj-1-title": "موقع الكتاب السنوي للدفعة",
-                "proj-1-tag": "ذكريات التخرج",
-                "proj-1-desc": "إنشاء واجهة ويب لتخزين الصور.",
-                "proj-2-title": "آلة حاسبة تفاعلية",
-                "proj-2-tag": "مهمة مستقلة",
-                "proj-2-desc": "تطبيق ويب لحساب الصيغ الرياضية الأساسية مع عرض أنيق.",
-                "proj-3-title": "تصميم نموذج التطبيق",
-                "proj-3-tag": "مدرسة",
-                "proj-3-desc": "تصميم نماذج التطبيقات.",
+                "skills-title": "المهارات", "skill-1": "إدارة نظام الصوت", "skill-3": "إلكترونيات",
+                "proj-title": "المهام والمشاريع", "proj-1-title": "موقع الكتاب السنوي للدفعة", "proj-1-tag": "ذكريات التخرج", "proj-1-desc": "إنشاء واجهة ويب لتخزين الصور.",
+                "proj-2-title": "آلة حاسبة تفاعلية", "proj-2-tag": "مهمة مستقلة", "proj-2-desc": "تطبيق ويب لحساب الصيغ الرياضية الأساسية مع عرض أنيق.",
+                "proj-3-title": "تصميم نموذج التطبيق", "proj-3-tag": "مدرسة", "proj-3-desc": "تصميم نماذج التطبيقات.",
                 "contact-title": "اتصل بي"
             }
         };
@@ -444,30 +423,14 @@
         // === LOGIKA SAKLAR BAHASA ===
         const langBtns = document.querySelectorAll('.lang-btn');
         const langSlider = document.getElementById('langSlider');
-
         langBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                // 1. Ubah Style Tombol Aktif
-                langBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                // 2. Gerakkan Latar Belakang (Pil) ke Tombol yang Diklik
-                const idx = btn.getAttribute('data-idx');
-                // Menggeser background sesuai dengan indeks kolom (0%, 100%, atau 200%)
-                langSlider.style.transform = `translateX(${idx * 100}%)`;
-
-                // 3. Proses Terjemahan
+                langBtns.forEach(b => b.classList.remove('active')); btn.classList.add('active');
+                const idx = btn.getAttribute('data-idx'); langSlider.style.transform = `translateX(${idx * 100}%)`;
                 const currentLang = btn.getAttribute('data-lang');
-                
-                // Atur arah teks (RTL untuk Arab, LTR untuk sisanya)
                 document.documentElement.lang = currentLang;
-                if(currentLang === 'ar') {
-                    document.body.setAttribute('dir', 'rtl');
-                } else {
-                    document.body.removeAttribute('dir');
-                }
-
-                // Ubah teks
+                if(currentLang === 'ar') document.body.setAttribute('dir', 'rtl'); else document.body.removeAttribute('dir');
+                
                 document.querySelectorAll('[data-i18n]').forEach(element => {
                     const key = element.getAttribute('data-i18n');
                     if(translations[currentLang][key]) {
@@ -476,6 +439,45 @@
                 });
             });
         });
+
+        // === SCROLL PROGRESS BAR & BACK TO TOP ===
+        window.addEventListener('scroll', () => {
+            // Scroll Progress
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("scrollProgress").style.width = scrolled + "%";
+
+            // Back to top button
+            const backToTopBtn = document.getElementById('backToTop');
+            if (winScroll > 300) { backToTopBtn.classList.add('show'); } 
+            else { backToTopBtn.classList.remove('show'); }
+        });
+
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+
+        // === ANIMASI EFEK MENGETIK ===
+        const words = ["Siswa SMA 1 Pasir Sakti", "Junior Web Developer", "Tech Enthusiast"];
+        let i = 0, timer, currentWord = "", isDeleting = false;
+        
+        function typeEffect() {
+            const typingText = document.getElementById('typingText');
+            if (!typingText) return;
+            
+            const fullWord = words[i % words.length];
+            if (isDeleting) { currentWord = fullWord.substring(0, currentWord.length - 1); } 
+            else { currentWord = fullWord.substring(0, currentWord.length + 1); }
+            
+            typingText.innerHTML = currentWord;
+            
+            let typeSpeed = isDeleting ? 50 : 100;
+            if (!isDeleting && currentWord === fullWord) { typeSpeed = 2000; isDeleting = true; } 
+            else if (isDeleting && currentWord === "") { isDeleting = false; i++; typeSpeed = 500; }
+            setTimeout(typeEffect, typeSpeed);
+        }
+        typeEffect();
 
         // 1. Setup Partikel Background
         particlesJS('particles-js', {
@@ -533,13 +535,9 @@
 
         // 5. LOGIKA ANIMASI FOTO PROFIL SAAT SCROLL
         const profileWrapper = document.getElementById('profileWrapper');
-
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 150) {
-                profileWrapper.classList.add('scrolled-out');
-            } else {
-                profileWrapper.classList.remove('scrolled-out');
-            }
+            if (window.scrollY > 150) { profileWrapper.classList.add('scrolled-out'); } 
+            else { profileWrapper.classList.remove('scrolled-out'); }
         });
     </script>
 </body>
